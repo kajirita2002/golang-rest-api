@@ -17,8 +17,12 @@ func main() {
 	router.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintln(w, "UP and runnigng・・・・")
 	})
+	// 投稿一覧表示機能
 	router.HandleFunc("/posts", getPosts).Methods("GET")
+	// 投稿機能
+	router.HandleFunc("/posts", addPost).Methods("POST")
 	// logとポート番号を出力する
 	log.Println("Server listening on port", port)
+	// logとexit(0)がエラー時にでます。
 	log.Fatalln(http.ListenAndServe(port, router))
 }
