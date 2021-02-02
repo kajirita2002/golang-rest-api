@@ -1,74 +1,14 @@
 package repository
 
 import (
-	"context"
-	"log"
-
-	"../entity"
-	"google.golang.org/genproto/googleapis/firestore/v1"
+	"github/kaji2002/entity"
 )
 
+// interface
 type PostRepository interface {
+	// メソッドを定義 引数は代入されるのでポインタ型にする
 	Save(post *entity.Post) (*entity.Post, error)
+	// 返り値がpostの配列
 	FindAll() ([]entity.Post, error)
 }
 
-type repo struct{}
-
-func NewPostRepository() PostRepository {
-	return &repo{}
-}
-
-const (
-	projectId      string = "progmatic-reviews"
-	collectionName string = "posts"
-)
-
-func (*repo) Save(post *entity.Post) (*entity.Post, error) {
-	ctx := context.Background()
-	client, err := firestore.NewClient(ctx, projectId)
-	if err != nil {
-		log.Fatalf("Fail to create a Firestore Client: %v", err)
-		return nil, err
-	}
-
-	defer client.Close()
-
-	_, _, err = client.Collection(collectionName).Add(ctx, map[string]interface{}{
-		"ID":    post.ID,
-		"Title": post.Title,
-		"Text":  post.Text,
-	})
-
-	if err != nil {
-		log.Fatalf("Fail adding a new post: %v", err)
-		return nil, err
-	}
-	return post, nil
-}
-
-func (*repo) FindAll() ([]entity.Post, error) {
-	ctx := context.Background()
-	client, err := firestore.NewClient(ctx, projectId)
-	if err != nil {
-		log.Fatalf("Fail to create a Firestore Client: %v", err)
-		return nil, err
-	}
-
-	defer client.Close()
-	var post []entity.Post
-	iterator := client.Collection(collectionName).Document(ctx)
-	for {
-		doc, err := iterator.Next()
-		if err != nil {
-			log.Fatalf("Fail to iterate the list of posts: %v", err)
-			return nil, err
-		}
-		post := entity.Post{
-			ID:    doc.Data()["ID"].(int64),
-			Title: doc.Data()["Title"].(string),
-			Text:  doc.Data()["Text"].(string),
-		}
-		posts = append(posts, post)
-	}
-}

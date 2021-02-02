@@ -5,13 +5,13 @@ import (
 	"math/rand"
 	"net/http"
 
-	"./entity"
-	"./repository"
+	"github/kaji2002/entity"
+	"github/kaji2002/repository"
 )
 
 // 定義が必要
 var (
-	repo repository.PostRepository = repository.NewPostRepository()
+	repo repository.PostRepository = repository.NewFirestoreRepository()
 )
 
 // 投稿一覧機能
