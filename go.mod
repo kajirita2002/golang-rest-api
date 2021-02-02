@@ -5,6 +5,7 @@ go 1.15
 require (
 	cloud.google.com/go v0.75.0 // indirect
 	cloud.google.com/go/firestore v1.4.0
+	github.com/go-chi/chi v1.5.1
 	github.com/gorilla/mux v1.8.0
 	go.opencensus.io v0.22.6 // indirect
 	golang.org/x/mod v0.4.1 // indirect

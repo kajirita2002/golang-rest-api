@@ -20,7 +20,7 @@ func NewFirestoreRepository() PostRepository {
 
 // 定数
 const (
-	projectId      string = "pragmatic-reviews"
+	projectId      string = "pragmatic-reviews-4eb12"
 	collectionName string = "posts"
 )
 
