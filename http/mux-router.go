@@ -7,17 +7,21 @@ import (
 	"github.com/gorilla/mux"
 )
 
+// muxRouter型
 type muxRouter struct{}
 
 var (
 	muxDispatcher = mux.NewRouter()
 )
 
+// Router型(interfaceを持つ)のrouterを作成する
 func NewMuxRouter() Router {
+	// muxRouterのインスタンスを返す
 	return &muxRouter{}
 }
-
+// method達
 func (*muxRouter) GET(uri string, f func(w http.ResponseWriter, r *http.Request)) {
+	// 実際の実装を書く
 	muxDispatcher.HandleFunc(uri, f).Methods("GET")
 }
 

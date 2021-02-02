@@ -7,11 +7,17 @@ import (
 	router "github/kaji2002/http"
 
 	"github/kaji2002/controller"
+	"github/kaji2002/service"
+	"github/kaji2002/repository"
 )
 
 var (
-	postController controller.PostController = controller.NewPostController()
-	httpRouter     router.Router             = router.NewChiRouter()
+	postRepository repository.PostRepository = repository.NewFirestoreRepository()
+	postService service.PostService          = service.NewPostService(postRepository)
+	// controllerを定義 PostController型
+	postController controller.PostController = controller.NewPostController(postService)
+	// routerを定義 今回はchi Router型
+	httpRouter router.Router                 = router.NewChiRouter()
 )
 
 func main() {
@@ -22,10 +28,10 @@ func main() {
 	httpRouter.GET("/", func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintln(w, "UP and runnigng・・・・")
 	})
-	//投稿一覧表示機能
+	// 投稿一覧表示機能
 	httpRouter.GET("/posts", postController.GetPosts)
 	// 投稿機能
 	httpRouter.POST("/posts", postController.AddPost)
-
+	// Serverを立ち上げる
 	httpRouter.SERVE(port)
 }
